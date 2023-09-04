@@ -1,2 +1,6 @@
-# Authentication Boilerplate
-It is an authentication boilerplate using NodeJS Framework's tools namely Express, JWT, Typescript, TypeORM.
+# Backend Starter
+It is an backend started consisting of the following tools:
+* ExpressJS
+* TypeScript
+* TypeORM
+* Authentication - JWT
