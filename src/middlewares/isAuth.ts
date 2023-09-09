@@ -1,9 +1,9 @@
 import { NextFunction, Response } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 
-import { COOKIE_NAME } from "../misc/constants";
-import { TAuthRequest, TPayload } from "../misc/types";
-import getResponse from "../utils/getResponse";
+import { COOKIE_NAME } from "../lib/constants";
+import { TAuthRequest, TPayload } from "../lib/types";
+import getResponse from "../lib/utils/getResponse";
 
 export default (req: TAuthRequest, res: Response, next: NextFunction) => {
   try {

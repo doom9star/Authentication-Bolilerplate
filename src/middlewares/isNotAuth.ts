@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 
-import { COOKIE_NAME } from "../misc/constants";
-import getResponse from "../utils/getResponse";
+import { COOKIE_NAME } from "../lib/constants";
+import getResponse from "../lib/utils/getResponse";
 
 export default (req: Request, res: Response, next: NextFunction) => {
   try {

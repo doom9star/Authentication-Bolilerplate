@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 
 import User from "./entities/User";
 import MainRouter from "./routes";
+import { createClient } from "redis";
+import { TAuthRequest } from "./lib/types";
 
 const main = async () => {
   dotenv.config({ path: path.join(__dirname, "../.env") });
@@ -18,16 +20,23 @@ const main = async () => {
     port: 3306,
     username: "root",
     password: "root",
-    database: "astroworld",
+    database: "test",
     entities: [User],
-    synchronize: true,
+    synchronize: false,
     logging: false,
   }).initialize();
 
   const app = express();
 
+  const redclient = createClient();
+  await redclient.connect();
+
   app.use(cookieParser());
   app.use(bodyParser.json());
+  app.use((req: TAuthRequest, _, next) => {
+    req.redclient = redclient;
+    next();
+  });
   app.use("/", MainRouter);
 
   app.listen(process.env.PORT, () => {

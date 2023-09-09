@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { WEEK } from "../misc/constants";
+import { WEEK } from "../constants";
 
-import { TPayload } from "../misc/types";
+import { TPayload } from "../types";
 
 export default (payload: TPayload) => {
   const token = jwt.sign(payload, (process.env as any).JWT_PRIVATE_KEY, {
