@@ -24,7 +24,7 @@ const main = async () => {
     database: <any>process.env.DB_NAME,
     entities: [User, File],
     synchronize: false,
-    logging: false,
+    logging: true,
   }).initialize();
 
   const app = express();
@@ -41,7 +41,7 @@ const main = async () => {
   app.use("/", MainRouter);
 
   app.listen(process.env.PORT, () => {
-    log("INFO", "\nSERVER running on http://localhost:${process.env.PORT}");
+    log("INFO", `server running on http://localhost:${process.env.PORT}`);
   });
 };
 
