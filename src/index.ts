@@ -10,6 +10,7 @@ import MainRouter from "./routes";
 import { createClient } from "redis";
 import { TAuthRequest } from "./lib/types";
 import { log } from "./lib/utils/logging";
+import File from "./entities/File";
 
 const main = async () => {
   dotenv.config({ path: path.join(__dirname, "../.env") });
@@ -19,9 +20,9 @@ const main = async () => {
     host: <any>process.env.DB_HOST,
     port: <any>process.env.DB_PORT,
     username: <any>process.env.DB_USER,
-    password: <any>process.env.PASS,
+    password: <any>process.env.DB_PASS,
     database: <any>process.env.DB_NAME,
-    entities: [User],
+    entities: [User, File],
     synchronize: false,
     logging: false,
   }).initialize();

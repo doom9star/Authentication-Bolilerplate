@@ -12,7 +12,7 @@ import getResponse from "../lib/utils/getResponse";
 import getToken from "../lib/utils/getToken";
 import isAuth from "../middlewares/isAuth";
 import isNotAuth from "../middlewares/isNotAuth";
-import { nanoid } from "nanoid";
+import { v4 } from "uuid";
 import { log } from "../lib/utils/logging";
 
 const router = Router();
@@ -103,7 +103,7 @@ router.post("/forgot-password", isAuth, async (req: TAuthRequest, res) => {
     if (!user.activated)
       return res.json(getResponse(400, "Account must be activated!"));
 
-    const tid = nanoid();
+    const tid = v4();
     req.redclient.set(`${APP_PREFIX}${FORGOT_PASSWORD_PREFIX}${tid}`, user.id);
 
     return res.json(getResponse(200));
