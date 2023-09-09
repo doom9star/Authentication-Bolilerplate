@@ -7,8 +7,8 @@ export function sendMail(options: EmailOptions): void {
     service: "gmail",
     secure: true,
     auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD,
+      user: process.env.MAILER_EMAIL,
+      pass: process.env.MAILER_PASSWORD,
     },
   });
   transporter.sendMail(options, (error: any) => {
