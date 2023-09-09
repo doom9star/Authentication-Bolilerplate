@@ -5,11 +5,11 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-
 import User from "./entities/User";
 import MainRouter from "./routes";
 import { createClient } from "redis";
 import { TAuthRequest } from "./lib/types";
+import { log } from "./lib/utils/logging";
 
 const main = async () => {
   dotenv.config({ path: path.join(__dirname, "../.env") });
@@ -40,7 +40,7 @@ const main = async () => {
   app.use("/", MainRouter);
 
   app.listen(process.env.PORT, () => {
-    console.log(`\nServer running on http://localhost:${process.env.PORT}`);
+    log("INFO", "\nSERVER running on http://localhost:${process.env.PORT}");
   });
 };
 

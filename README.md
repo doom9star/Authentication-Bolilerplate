@@ -2,8 +2,16 @@
 
 It is an backend starter consisting of the following tools:
 
-- ExpressJS
-- TypeScript
-- TypeORM
-- Redis
-- JWT Authentication/Authorization
+### STACK
+
+- TypeScript &nbsp;|&nbsp; Language
+- ExpressJS &nbsp;|&nbsp; Web Framework
+- MySQL &nbsp;|&nbsp; Database
+- TypeORM &nbsp;|&nbsp; ORM
+- Redis &nbsp;|&nbsp; Caching
+- Node Mailer &nbsp;|&nbsp; Mailing
+- Cloudinary &nbsp;|&nbsp; File Hosting
+
+### FEATURE
+
+- Authentication/Authorization

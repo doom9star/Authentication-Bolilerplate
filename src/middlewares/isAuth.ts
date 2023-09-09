@@ -4,6 +4,7 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { COOKIE_NAME } from "../lib/constants";
 import { TAuthRequest, TPayload } from "../lib/types";
 import getResponse from "../lib/utils/getResponse";
+import { log } from "../lib/utils/logging";
 
 export default (req: TAuthRequest, res: Response, next: NextFunction) => {
   try {
@@ -15,8 +16,8 @@ export default (req: TAuthRequest, res: Response, next: NextFunction) => {
     ) as TPayload;
     req.user = payload;
     next();
-  } catch (error) {
-    console.error(error);
-    return res.json(getResponse("ERROR", "User is not authenticated!"));
+  } catch (error: any) {
+    log("ERROR", error.message);
+    return res.json(getResponse(401));
   }
 };

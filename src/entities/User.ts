@@ -1,7 +1,7 @@
-import { BeforeInsert, Column, Entity } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinColumn, OneToOne } from "typeorm";
 import bcrypt from "bcryptjs";
-
 import Base from "./Base";
+import File from "./File";
 
 @Entity("user")
 export default class User extends Base {
@@ -16,6 +16,10 @@ export default class User extends Base {
 
   @Column({ default: false })
   activated: boolean;
+
+  @OneToOne(() => File, { cascade: true })
+  @JoinColumn()
+  avatar: File;
 
   @BeforeInsert()
   async hashPassword() {
