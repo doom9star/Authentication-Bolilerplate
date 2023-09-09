@@ -15,12 +15,12 @@ const main = async () => {
   dotenv.config({ path: path.join(__dirname, "../.env") });
 
   await new DataSource({
-    type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    password: "root",
-    database: "test",
+    type: <any>process.env.DB_TYPE,
+    host: <any>process.env.DB_HOST,
+    port: <any>process.env.DB_PORT,
+    username: <any>process.env.DB_USER,
+    password: <any>process.env.PASS,
+    database: <any>process.env.DB_NAME,
     entities: [User],
     synchronize: false,
     logging: false,
