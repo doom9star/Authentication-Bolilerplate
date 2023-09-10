@@ -35,7 +35,7 @@ router.post(
       const { tid } = req.params;
       const { password } = req.body;
 
-      const uid = req.redclient.get(
+      const uid = await req.redclient.get(
         `${APP_PREFIX}${ACTIVATE_ACCOUNT_PREFIX}${tid}`
       );
 
@@ -51,7 +51,7 @@ router.post(
       user.activated = true;
       await user.save();
 
-      req.redclient.del(`${APP_PREFIX}${ACTIVATE_ACCOUNT_PREFIX}${tid}`);
+      await req.redclient.del(`${APP_PREFIX}${ACTIVATE_ACCOUNT_PREFIX}${tid}`);
 
       return res.json(getResponse(200));
     } catch (error: any) {
@@ -61,13 +61,18 @@ router.post(
   }
 );
 
-router.post("/register", isNotAuth, async (req, res) => {
+router.post("/register", isNotAuth, async (req: TAuthRequest, res) => {
   try {
     const { name, email, password } = req.body;
     const user = await User.create({ name, email, password }).save();
 
+    const tid = v4();
+    const key = `${APP_PREFIX}${ACTIVATE_ACCOUNT_PREFIX}${tid}`;
+    const url = `${process.env.CLIENT}/auth/activate-account/${key}`;
+    await req.redclient.set(key, user.id);
+
     res.cookie(`${APP_PREFIX}${COOKIE_NAME}`, getToken({ id: user.id }));
-    return res.json(getResponse(200, user));
+    return res.json(getResponse(200, url));
   } catch (error: any) {
     log("ERROR", error.message);
     return res.json(getResponse(500, error.message));
@@ -113,9 +118,11 @@ router.post("/forgot-password", isAuth, async (req: TAuthRequest, res) => {
       return res.json(getResponse(400, "Account must be activated!"));
 
     const tid = v4();
-    req.redclient.set(`${APP_PREFIX}${FORGOT_PASSWORD_PREFIX}${tid}`, user.id);
+    const key = `${APP_PREFIX}${FORGOT_PASSWORD_PREFIX}${tid}`;
+    const url = `${process.env.CLIENT}/auth/reset-password/${key}`;
+    await req.redclient.set(key, user.id);
 
-    return res.json(getResponse(200));
+    return res.json(getResponse(200, url));
   } catch (error: any) {
     log("ERROR", error.message);
     return res.json(getResponse(500, error.message));
@@ -126,7 +133,7 @@ router.post("/reset-password/:tid", isAuth, async (req: TAuthRequest, res) => {
   try {
     const { tid } = req.params;
 
-    const uid = await req.redclient.get(
+    const uid = await await req.redclient.get(
       `${APP_PREFIX}${FORGOT_PASSWORD_PREFIX}${tid}`
     );
     const { password } = req.body;
@@ -137,7 +144,7 @@ router.post("/reset-password/:tid", isAuth, async (req: TAuthRequest, res) => {
     user.password = await bcrypt.hash(password, 12);
     user.save();
 
-    req.redclient.del(`${APP_PREFIX}${FORGOT_PASSWORD_PREFIX}${tid}`);
+    await req.redclient.del(`${APP_PREFIX}${FORGOT_PASSWORD_PREFIX}${tid}`);
 
     return res.json(getResponse(200));
   } catch (error: any) {
